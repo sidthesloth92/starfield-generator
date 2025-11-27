@@ -1,0 +1,96 @@
+<div id="controls-panel" class="p-4 space-y-4 text-white">
+  <h2 class="text-xl font-bold text-center mb-4 text-accent-blue">Simulation Controls</h2>
+
+  <!-- Zoom Rate Control -->
+  <div class="space-y-1">
+    <label for="zoomRateInput" class="block text-sm font-medium flex justify-between">
+      Galaxy Zoom Rate:
+      <span id="zoomRateValue" class="font-mono text-yellow-300"></span>
+    </label>
+    <input
+      type="range"
+      id="zoomRateInput"
+      min="0.0001"
+      max="0.01"
+      step="0.0001"
+      class="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer"
+    />
+  </div>
+
+  <!-- Rotation Rate Control -->
+  <div class="space-y-1">
+    <label for="rotationRateInput" class="block text-sm font-medium flex justify-between">
+      Scene Rotation Rate:
+      <span id="rotationRateValue" class="font-mono text-yellow-300"></span>
+    </label>
+    <input
+      type="range"
+      id="rotationRateInput"
+      min="0.0001"
+      max="0.005"
+      step="0.0001"
+      class="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer"
+    />
+  </div>
+
+  <!-- Streaking Star Speed Control -->
+  <div class="space-y-1">
+    <label for="streakingSpeedInput" class="block text-sm font-medium flex justify-between">
+      Streaking Star Speed (Z):
+      <span id="streakingSpeedValue" class="font-mono text-yellow-300"></span>
+    </label>
+    <input
+      type="range"
+      id="streakingSpeedInput"
+      min="1"
+      max="10"
+      step="1"
+      class="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer"
+    />
+  </div>
+
+  <!-- Non-Streaking Star Speed Control -->
+  <div class="space-y-1">
+    <label for="nonStreakingSpeedInput" class="block text-sm font-medium flex justify-between">
+      Ambient Star Speed (Z):
+      <span id="nonStreakingSpeedValue" class="font-mono text-yellow-300"></span>
+    </label>
+    <input
+      type="range"
+      id="nonStreakingSpeedInput"
+      min="0.1"
+      max="5"
+      step="0.1"
+      class="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer"
+    />
+  </div>
+
+  <!-- NEW: Star Base Size Control -->
+  <div class="space-y-1">
+    <label for="baseStarSizeInput" class="block text-sm font-medium flex justify-between">
+      Base Star Size Multiplier:
+      <span id="baseStarSizeValue" class="font-mono text-yellow-300"></span>
+    </label>
+    <input
+      type="range"
+      id="baseStarSizeInput"
+      min="1"
+      max="10"
+      step="0.5"
+      class="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer"
+    />
+  </div>
+
+  <!-- Video Recording Button --><button
+    id="recordButton"
+    class="w-full py-3 mt-4 text-lg font-semibold rounded-lg transition duration-200 focus:outline-none"
+  >
+    Start Recording (Max 15s)
+  </button>
+
+  <!-- ADVISORY NOTE ADDED HERE -->
+  <p class="text-xs text-center text-red-400 mt-2">
+    *Note: Output format (WebM/MP4) depends on your browser. WebM files may not open in QuickTime
+    Player. Use VLC or a similar player for guaranteed playback.*
+  </p>
+</div>
