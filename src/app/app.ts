@@ -314,7 +314,14 @@ export class App implements AfterViewInit {
       const stream = (this.canvas as any).captureStream(FRAME_RATE);
       let mimeType = 'video/webm';
 
-      if (MediaRecorder.isTypeSupported('video/mp4')) {
+      // Prioritize H.264 for better compatibility with Mac/iPhone
+      if (MediaRecorder.isTypeSupported('video/mp4; codecs="avc1.42E01E, mp4a.40.2"')) {
+        mimeType = 'video/mp4; codecs="avc1.42E01E, mp4a.40.2"';
+      } else if (MediaRecorder.isTypeSupported('video/mp4; codecs="avc1.4d002a"')) {
+        mimeType = 'video/mp4; codecs="avc1.4d002a"';
+      } else if (MediaRecorder.isTypeSupported('video/mp4; codecs="h264"')) {
+        mimeType = 'video/mp4; codecs="h264"';
+      } else if (MediaRecorder.isTypeSupported('video/mp4')) {
         mimeType = 'video/mp4';
       } else if (MediaRecorder.isTypeSupported('video/webm; codecs=vp9')) {
         mimeType = 'video/webm; codecs=vp9';
