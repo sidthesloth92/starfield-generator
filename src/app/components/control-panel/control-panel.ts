@@ -4,7 +4,7 @@ import { Component } from '@angular/core';
   selector: 'sfg-control-panel',
   imports: [],
   templateUrl: './control-panel.html',
-  styleUrl: './control-panel.scss',
+  styleUrl: './control-panel.css',
 })
 export class ControlPanel {
 

@@ -1,6 +1,8 @@
 .header-container {
   position: relative;
   overflow: hidden;
+  border-left: 0;
+  border-right: 0;
 
   &::after {
     content: '';

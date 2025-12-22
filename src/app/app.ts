@@ -46,7 +46,7 @@ const FRAME_RATE = 60;
   selector: 'sfg-root',
   imports: [ControlPanel, Simulator, HeaderComponent],
   templateUrl: './app.html',
-  styleUrl: './app.scss',
+  styleUrl: './app.css',
 })
 export class App implements AfterViewInit {
   protected readonly title = signal('starfield-generator');

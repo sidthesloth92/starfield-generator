@@ -4,7 +4,7 @@ import { Component } from '@angular/core';
   selector: 'sfg-simulator',
   imports: [],
   templateUrl: './simulator.html',
-  styleUrl: './simulator.scss',
+  styleUrl: './simulator.css',
 })
 export class Simulator {
 
