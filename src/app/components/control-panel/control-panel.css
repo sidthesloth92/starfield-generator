@@ -2,6 +2,9 @@
   display: block;
   flex: 0 0 350px;
   width: 350px;
+  max-height: calc(100vh - 120px);
+  overflow-y: auto;
+  padding-right: 4px; /* Space for scrollbar */
 }
 
 /* Style the input range sliders */

@@ -3,10 +3,10 @@
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  gap: 4rem;
+  gap: 2rem;
   width: 100%;
-  height: calc(100vh - 56px); /* Adjusted for refined header height */
-  padding: 2rem;
+  height: calc(100vh - 56px);
+  padding: 1rem;
   background-color: var(--space-bg);
   overflow: hidden;
 }
