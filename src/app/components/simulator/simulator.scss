@@ -1,6 +1,7 @@
 .simulation-wrapper {
-  height: 640px;
-  aspect-ratio: 9/16;
+  background: #000;
+  aspect-ratio: 9 / 16;
+  width: 100%;
 }
 
 /* The canvas now takes the full space within the 9:16 wrapper */
@@ -30,4 +31,35 @@
   100% {
     transform: rotate(360deg);
   }
+}
+
+.scan-line {
+  animation: scan 8s linear infinite;
+}
+
+@keyframes scan {
+  0% {
+    top: 0%;
+    opacity: 0;
+  }
+  5% {
+    opacity: 1;
+  }
+  95% {
+    opacity: 1;
+  }
+  100% {
+    top: 100%;
+    opacity: 0;
+  }
+}
+
+.spinner-futuristic {
+  width: 40px;
+  height: 40px;
+  border: 2px solid rgba(0, 242, 255, 0.1);
+  border-top: 2px solid var(--neon-cyan);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  box-shadow: 0 0 15px rgba(0, 242, 255, 0.2);
 }

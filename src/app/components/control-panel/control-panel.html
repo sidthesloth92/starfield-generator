@@ -1,96 +1,125 @@
-<div class="control-panel p-4 space-y-4 text-white">
-  <h2 class="text-xl font-bold text-center mb-4 text-accent-blue">Simulation Controls</h2>
+<div class="control-panel glass-panel p-6 space-y-6 text-white rounded-xl max-w-md mx-auto mt-4">
+  <div class="flex items-center justify-between mb-6 border-b border-neon-cyan/30 pb-2">
+    <h2 class="text-2xl font-bold neon-text tracking-widest">System Controls</h2>
+    <div class="text-[10px] font-mono text-neon-cyan/50 animate-pulse">STATUS: ACTIVE</div>
+  </div>
 
   <!-- Zoom Rate Control -->
-  <div class="space-y-1">
-    <label for="zoomRateInput" class="block text-sm font-medium flex justify-between">
-      Galaxy Zoom Rate:
-      <span id="zoomRateValue" class="font-mono text-yellow-300"></span>
+  <div class="space-y-2 group">
+    <label
+      for="zoomRateInput"
+      class="block text-xs font-bold uppercase tracking-tighter flex justify-between group-hover:text-neon-cyan transition-colors"
+    >
+      <span>Galaxy Zoom Rate</span>
+      <span id="zoomRateValue" class="font-mono text-neon-cyan"></span>
     </label>
-    <input
-      type="range"
-      id="zoomRateInput"
-      min="0.0001"
-      max="0.01"
-      step="0.0001"
-      class="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer"
-    />
+    <div class="relative h-6 flex items-center">
+      <input
+        type="range"
+        id="zoomRateInput"
+        min="0.0001"
+        max="0.01"
+        step="0.0001"
+        class="futuristic-slider w-full"
+      />
+    </div>
   </div>
 
   <!-- Rotation Rate Control -->
-  <div class="space-y-1">
-    <label for="rotationRateInput" class="block text-sm font-medium flex justify-between">
-      Scene Rotation Rate:
-      <span id="rotationRateValue" class="font-mono text-yellow-300"></span>
+  <div class="space-y-2 group">
+    <label
+      for="rotationRateInput"
+      class="block text-xs font-bold uppercase tracking-tighter flex justify-between group-hover:text-neon-cyan transition-colors"
+    >
+      <span>Scene Rotation Rate</span>
+      <span id="rotationRateValue" class="font-mono text-neon-cyan"></span>
     </label>
-    <input
-      type="range"
-      id="rotationRateInput"
-      min="0.0001"
-      max="0.005"
-      step="0.0001"
-      class="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer"
-    />
+    <div class="relative h-6 flex items-center">
+      <input
+        type="range"
+        id="rotationRateInput"
+        min="0.0001"
+        max="0.005"
+        step="0.0001"
+        class="futuristic-slider w-full"
+      />
+    </div>
   </div>
 
   <!-- Streaking Star Speed Control -->
-  <div class="space-y-1">
-    <label for="streakingSpeedInput" class="block text-sm font-medium flex justify-between">
-      Streaking Star Speed (Z):
-      <span id="streakingSpeedValue" class="font-mono text-yellow-300"></span>
+  <div class="space-y-2 group">
+    <label
+      for="streakingSpeedInput"
+      class="block text-xs font-bold uppercase tracking-tighter flex justify-between group-hover:text-neon-cyan transition-colors"
+    >
+      <span>Streaking Star Speed (Z)</span>
+      <span id="streakingSpeedValue" class="font-mono text-neon-cyan"></span>
     </label>
-    <input
-      type="range"
-      id="streakingSpeedInput"
-      min="1"
-      max="10"
-      step="1"
-      class="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer"
-    />
+    <div class="relative h-6 flex items-center">
+      <input
+        type="range"
+        id="streakingSpeedInput"
+        min="1"
+        max="10"
+        step="1"
+        class="futuristic-slider w-full"
+      />
+    </div>
   </div>
 
   <!-- Non-Streaking Star Speed Control -->
-  <div class="space-y-1">
-    <label for="nonStreakingSpeedInput" class="block text-sm font-medium flex justify-between">
-      Ambient Star Speed (Z):
-      <span id="nonStreakingSpeedValue" class="font-mono text-yellow-300"></span>
+  <div class="space-y-2 group">
+    <label
+      for="nonStreakingSpeedInput"
+      class="block text-xs font-bold uppercase tracking-tighter flex justify-between group-hover:text-neon-cyan transition-colors"
+    >
+      <span>Ambient Star Speed (Z)</span>
+      <span id="nonStreakingSpeedValue" class="font-mono text-neon-cyan"></span>
     </label>
-    <input
-      type="range"
-      id="nonStreakingSpeedInput"
-      min="0.1"
-      max="5"
-      step="0.1"
-      class="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer"
-    />
+    <div class="relative h-6 flex items-center">
+      <input
+        type="range"
+        id="nonStreakingSpeedInput"
+        min="0.1"
+        max="5"
+        step="0.1"
+        class="futuristic-slider w-full"
+      />
+    </div>
   </div>
 
-  <!-- NEW: Star Base Size Control -->
-  <div class="space-y-1">
-    <label for="baseStarSizeInput" class="block text-sm font-medium flex justify-between">
-      Base Star Size Multiplier:
-      <span id="baseStarSizeValue" class="font-mono text-yellow-300"></span>
+  <!-- Star Base Size Control -->
+  <div class="space-y-2 group">
+    <label
+      for="baseStarSizeInput"
+      class="block text-xs font-bold uppercase tracking-tighter flex justify-between group-hover:text-neon-cyan transition-colors"
+    >
+      <span>Base Star Size Multiplier</span>
+      <span id="baseStarSizeValue" class="font-mono text-neon-cyan"></span>
     </label>
-    <input
-      type="range"
-      id="baseStarSizeInput"
-      min="1"
-      max="100"
-      step="0.5"
-      class="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer"
-    />
+    <div class="relative h-6 flex items-center">
+      <input
+        type="range"
+        id="baseStarSizeInput"
+        min="1"
+        max="100"
+        step="0.5"
+        class="futuristic-slider w-full"
+      />
+    </div>
   </div>
 
-  <!-- Video Recording Button --><button
-    id="recordButton"
-    class="w-full py-3 mt-4 text-lg font-semibold rounded-lg transition duration-200 focus:outline-none"
-  >
-    Start Recording (Max 15s)
-  </button>
+  <!-- Video Recording Button -->
+  <div class="pt-4">
+    <button
+      id="recordButton"
+      class="w-full py-4 text-sm font-bold uppercase tracking-widest rounded-none border border-neon-cyan/50 bg-neon-cyan/10 hover:bg-neon-cyan/20 hover:border-neon-cyan transition-all duration-300 shadow-[0_0_15px_rgba(0,242,255,0.1)] hover:shadow-[0_0_25px_rgba(0,242,255,0.3)]"
+    >
+      Initialize Recording
+    </button>
+  </div>
 
-  <!-- ADVISORY NOTE ADDED HERE -->
-  <p class="text-xs text-center text-red-400 mt-2">
-    *Note: Output format (WebM/MP4) depends on your browser. WebM files may not open in QuickTime
-    Player. Use VLC or a similar player for guaranteed playback.*
-  </p>
+  <div class="text-[9px] font-mono text-center text-neon-cyan/40 uppercase tracking-widest mt-4">
+    Encryption: AES-256 | Protocol: Starfield-v2.0
+  </div>
 </div>
