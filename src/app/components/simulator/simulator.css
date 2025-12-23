@@ -10,6 +10,14 @@
   max-height: calc(100vh - 120px);
 }
 
+@media (max-width: 768px) {
+  :host {
+    flex: 0 0 auto;
+    height: auto;
+    margin-bottom: 1rem;
+  }
+}
+
 .simulation-wrapper {
   background: #000;
   aspect-ratio: 9 / 16;
@@ -17,6 +25,13 @@
   max-width: 100%;
   position: relative;
   overflow: hidden;
+}
+
+@media (max-width: 768px) {
+  .simulation-wrapper {
+    height: auto;
+    width: 100%;
+  }
 }
 
 /* The canvas now takes the full space within the 9:16 wrapper */

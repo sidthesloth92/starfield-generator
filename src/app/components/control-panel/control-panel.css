@@ -7,6 +7,16 @@
   padding-right: 4px; /* Space for scrollbar */
 }
 
+@media (max-width: 768px) {
+  :host {
+    flex: 0 0 auto;
+    width: 100%;
+    max-width: 500px;
+    max-height: none;
+    overflow-y: visible;
+  }
+}
+
 /* Style the input range sliders */
 input[type='range']::-webkit-slider-thumb {
   -webkit-appearance: none;
