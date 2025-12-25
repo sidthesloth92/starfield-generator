@@ -19,7 +19,7 @@ export class ControlPanel {
 
   updateControl(control: ControlKey, event: Event) {
     const value = parseFloat((event.target as HTMLInputElement).value);
-    this.simService.updateParameter(control, value);
+    this.simService.updateControl(control, value);
   }
 
   getControl(control: ControlKey): number {

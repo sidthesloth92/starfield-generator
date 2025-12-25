@@ -19,15 +19,15 @@ export class SimulationService {
   recordingState = signal<RecordingState>('idle');
   loadingProgress = signal<string>('Initializing...');
 
-  getControl(control: ControlKey): number {
+  getControlValue(control: ControlKey): number {
     return this.controls[control]();
   }
 
-  getParameterSignal(control: ControlKey): Signal<number> {
+  getControlSignal(control: ControlKey): Signal<number> {
     return this.controls[control];
   }
 
-  updateParameter(control: ControlKey, value: number) {
+  updateControl(control: ControlKey, value: number) {
     this.controls[control].set(value);
   }
 }
