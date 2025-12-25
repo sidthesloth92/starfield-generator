@@ -22,8 +22,8 @@ export class ControlPanel {
     this.simService.updateControl(control, value);
   }
 
-  getControl(control: ControlKey): number {
-    return this.simService.getControl(control);
+  getControlValue(control: ControlKey): number {
+    return this.simService.getControlValue(control);
   }
 
   toggleRecording() {

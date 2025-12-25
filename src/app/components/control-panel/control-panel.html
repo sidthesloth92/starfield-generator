@@ -12,7 +12,7 @@
     >
       <span>{{ controlConfig[control].label }}</span>
       <span class="font-mono text-neon-pink">
-        {{ getControl(control).toFixed(controlConfig[control].precision) }}
+        {{ getControlValue(control).toFixed(controlConfig[control].precision) }}
       </span>
     </label>
     <div class="relative h-6 flex items-center">
@@ -21,7 +21,7 @@
         [min]="controlConfig[control].min"
         [max]="controlConfig[control].max"
         [step]="controlConfig[control].step"
-        [value]="getControl(control)"
+        [value]="getControlValue(control)"
         (input)="updateControl(control, $event)"
         class="futuristic-slider w-full"
       />
