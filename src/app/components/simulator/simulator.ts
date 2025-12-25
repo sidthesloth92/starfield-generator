@@ -10,7 +10,7 @@ const FRAME_RATE = 60;
 const MAX_RECORDING_SECONDS = 30;
 
 // Shooting star config
-const SHOOTING_STAR_SPEED_MULTIPLIER = 12; // Faster than ambient but not too fast
+const SHOOTING_STAR_SPEED_MULTIPLIER = 7; // Faster than ambient but not too fast
 const SHOOTING_STAR_SPAWN_RATE = 1.5; // Stars per second
 const TRAIL_LENGTH = 8; // Number of trail segments
 const CENTER_SPAWN_RATIO = 0.3; // Spawn within ±30% of center
@@ -376,12 +376,12 @@ class ShootingStar {
       const py = t.y * k;
       const baseSizeParallax = 1 - t.z / this.initialZ;
       const trailOpacity = (1 - i / this.trail.length) * 0.6; // Fade out along trail
-      const radius = baseSizeParallax * baseSize * scaleCompensation * 0.4;
+      const radius = baseSizeParallax * baseSize * scaleCompensation * 0.25;
 
       if (radius > 0.1) {
         ctx.globalAlpha = trailOpacity;
         if (sprite) {
-          const size = radius * 6;
+          const size = radius * 4;
           ctx.drawImage(sprite, px - size / 2, py - size / 2, size, size);
         } else {
           ctx.fillStyle = `rgba(255, 255, 255, ${trailOpacity})`;
@@ -398,12 +398,12 @@ class ShootingStar {
       const px = this.x * k;
       const py = this.y * k;
       const baseSizeParallax = 1 - this.z / this.initialZ;
-      const radius = baseSizeParallax * baseSize * scaleCompensation * 0.8;
+      const radius = baseSizeParallax * baseSize * scaleCompensation * 0.5;
 
       if (radius > 0.1) {
         ctx.globalAlpha = 1.0;
         if (sprite) {
-          const size = radius * 10;
+          const size = radius * 6;
           ctx.drawImage(sprite, px - size / 2, py - size / 2, size, size);
         } else {
           ctx.fillStyle = 'rgba(255, 255, 255, 1)';

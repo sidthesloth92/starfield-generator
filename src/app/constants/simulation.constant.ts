@@ -19,9 +19,9 @@ export const CONTROLS: Record<ControlKey, ControlMetadata> = {
   },
   shootingStarSpeed: {
     label: 'Shooting Star Speed',
-    min: 1,
+    min: 0,
     max: 10,
-    step: 1,
+    step: .1,
     initial: 0.7,
     precision: 1,
   },
@@ -30,7 +30,7 @@ export const CONTROLS: Record<ControlKey, ControlMetadata> = {
     min: 0.1,
     max: 5,
     step: 0.1,
-    initial: 1,
+    initial: 0.8,
     precision: 1,
   },
   baseStarSize: {
