@@ -1,0 +1,44 @@
+import { ControlKey, ControlMetadata } from '../models/simulation.model';
+
+export const CONTROLS: Record<ControlKey, ControlMetadata> = {
+  zoomRate: {
+    label: 'Galaxy Zoom Rate',
+    min: 0.0001,
+    max: 0.01,
+    step: 0.0001,
+    initial: 0.0002,
+    precision: 4,
+  },
+  rotationRate: {
+    label: 'Scene Rotation Rate',
+    min: 0.0001,
+    max: 0.005,
+    step: 0.0001,
+    initial: 0.0001,
+    precision: 4,
+  },
+  streakingStarSpeed: {
+    label: 'Streaking Star Speed (Z)',
+    min: 1,
+    max: 10,
+    step: 1,
+    initial: 0.7,
+    precision: 1,
+  },
+  nonStreakingStarSpeed: {
+    label: 'Ambient Star Speed (Z)',
+    min: 0.1,
+    max: 5,
+    step: 0.1,
+    initial: 1,
+    precision: 1,
+  },
+  baseStarSize: {
+    label: 'Base Star Size Multiplier',
+    min: 1,
+    max: 100,
+    step: 0.5,
+    initial: 10,
+    precision: 1,
+  },
+};

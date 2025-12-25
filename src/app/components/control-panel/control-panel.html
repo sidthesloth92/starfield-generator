@@ -4,112 +4,30 @@
     <div class="text-[10px] font-mono text-neon-pink/50 animate-pulse">STATUS: ACTIVE</div>
   </div>
 
-  <!-- Zoom Rate Control -->
+  <!-- Dynamic Controls Loop -->
+  @for (control of controlNames; track control) {
   <div class="space-y-2 group">
     <label
       class="block text-xs font-bold uppercase tracking-tighter flex justify-between group-hover:text-neon-pink transition-colors"
     >
-      <span>Galaxy Zoom Rate</span>
-      <span class="font-mono text-neon-pink">{{ simService.zoomRate().toFixed(4) }}</span>
+      <span>{{ controlConfig[control].label }}</span>
+      <span class="font-mono text-neon-pink">
+        {{ getControl(control).toFixed(controlConfig[control].precision) }}
+      </span>
     </label>
     <div class="relative h-6 flex items-center">
       <input
         type="range"
-        min="0.0001"
-        max="0.01"
-        step="0.0001"
-        [value]="simService.zoomRate()"
-        (input)="updateZoom($event)"
+        [min]="controlConfig[control].min"
+        [max]="controlConfig[control].max"
+        [step]="controlConfig[control].step"
+        [value]="getControl(control)"
+        (input)="updateControl(control, $event)"
         class="futuristic-slider w-full"
       />
     </div>
   </div>
-
-  <!-- Rotation Rate Control -->
-  <div class="space-y-2 group">
-    <label
-      class="block text-xs font-bold uppercase tracking-tighter flex justify-between group-hover:text-neon-pink transition-colors"
-    >
-      <span>Scene Rotation Rate</span>
-      <span class="font-mono text-neon-pink">{{ simService.rotationRate().toFixed(4) }}</span>
-    </label>
-    <div class="relative h-6 flex items-center">
-      <input
-        type="range"
-        min="0.0001"
-        max="0.005"
-        step="0.0001"
-        [value]="simService.rotationRate()"
-        (input)="updateRotation($event)"
-        class="futuristic-slider w-full"
-      />
-    </div>
-  </div>
-
-  <!-- Streaking Star Speed Control -->
-  <div class="space-y-2 group">
-    <label
-      class="block text-xs font-bold uppercase tracking-tighter flex justify-between group-hover:text-neon-pink transition-colors"
-    >
-      <span>Streaking Star Speed (Z)</span>
-      <span class="font-mono text-neon-pink">{{ simService.streakingStarSpeed().toFixed(1) }}</span>
-    </label>
-    <div class="relative h-6 flex items-center">
-      <input
-        type="range"
-        min="1"
-        max="10"
-        step="1"
-        [value]="simService.streakingStarSpeed()"
-        (input)="updateStreakingSpeed($event)"
-        class="futuristic-slider w-full"
-      />
-    </div>
-  </div>
-
-  <!-- Non-Streaking Star Speed Control -->
-  <div class="space-y-2 group">
-    <label
-      class="block text-xs font-bold uppercase tracking-tighter flex justify-between group-hover:text-neon-pink transition-colors"
-    >
-      <span>Ambient Star Speed (Z)</span>
-      <span class="font-mono text-neon-pink">{{
-        simService.nonStreakingStarSpeed().toFixed(1)
-      }}</span>
-    </label>
-    <div class="relative h-6 flex items-center">
-      <input
-        type="range"
-        min="0.1"
-        max="5"
-        step="0.1"
-        [value]="simService.nonStreakingStarSpeed()"
-        (input)="updateAmbientSpeed($event)"
-        class="futuristic-slider w-full"
-      />
-    </div>
-  </div>
-
-  <!-- Star Base Size Control -->
-  <div class="space-y-2 group">
-    <label
-      class="block text-xs font-bold uppercase tracking-tighter flex justify-between group-hover:text-neon-pink transition-colors"
-    >
-      <span>Base Star Size Multiplier</span>
-      <span class="font-mono text-neon-pink">{{ simService.baseStarSize().toFixed(1) }}</span>
-    </label>
-    <div class="relative h-6 flex items-center">
-      <input
-        type="range"
-        min="1"
-        max="100"
-        step="0.5"
-        [value]="simService.baseStarSize()"
-        (input)="updateStarSize($event)"
-        class="futuristic-slider w-full"
-      />
-    </div>
-  </div>
+  }
 
   <!-- Video Recording Button -->
   <div class="pt-4">

@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SimulationService } from '../../services/simulation.service';
+import { CONTROLS } from '../../constants/simulation.constant';
+import { ControlMetadata, ControlKey } from '../../models/simulation.model';
 
 @Component({
   selector: 'sfg-control-panel',
@@ -10,31 +12,18 @@ import { SimulationService } from '../../services/simulation.service';
   styleUrl: './control-panel.css',
 })
 export class ControlPanel {
+  public controlConfig = CONTROLS;
+  public controlNames = Object.keys(CONTROLS) as ControlKey[];
+
   constructor(public simService: SimulationService) {}
 
-  updateZoom(event: Event) {
+  updateControl(control: ControlKey, event: Event) {
     const value = parseFloat((event.target as HTMLInputElement).value);
-    this.simService.zoomRate.set(value);
+    this.simService.updateParameter(control, value);
   }
 
-  updateRotation(event: Event) {
-    const value = parseFloat((event.target as HTMLInputElement).value);
-    this.simService.rotationRate.set(value);
-  }
-
-  updateStreakingSpeed(event: Event) {
-    const value = parseFloat((event.target as HTMLInputElement).value);
-    this.simService.streakingStarSpeed.set(value);
-  }
-
-  updateAmbientSpeed(event: Event) {
-    const value = parseFloat((event.target as HTMLInputElement).value);
-    this.simService.nonStreakingStarSpeed.set(value);
-  }
-
-  updateStarSize(event: Event) {
-    const value = parseFloat((event.target as HTMLInputElement).value);
-    this.simService.baseStarSize.set(value);
+  getControl(control: ControlKey): number {
+    return this.simService.getControl(control);
   }
 
   toggleRecording() {
@@ -42,15 +31,15 @@ export class ControlPanel {
     if (currentState === 'idle') {
       this.simService.recordingState.set('recording');
     } else if (currentState === 'recording') {
-      this.simService.recordingState.set('idle'); // This will trigger stop in Simulator
+      this.simService.recordingState.set('idle');
     }
   }
 
   get buttonText(): string {
     const state = this.simService.recordingState();
-    if (state === 'recording') return 'Recording... (15s max)';
+    if (state === 'recording') return 'Recording... (30s max)';
     if (state === 'processing') return 'Processing...';
-    return 'Start Recording (Max 15s)';
+    return 'Start Recording (Max 30s)';
   }
 
   get buttonClass(): string {

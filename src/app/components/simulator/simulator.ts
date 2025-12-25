@@ -8,7 +8,7 @@ const NUM_STREAKING_STARS = 500;
 const NUM_NON_STREAKING_STARS = 1000;
 const TOTAL_STAR_COUNT = NUM_STREAKING_STARS + NUM_NON_STREAKING_STARS;
 const FRAME_RATE = 60;
-const MAX_RECORDING_SECONDS = 15;
+const MAX_RECORDING_SECONDS = 30;
 
 @Component({
   selector: 'sfg-simulator',
@@ -148,9 +148,9 @@ export class Simulator implements AfterViewInit {
     requestAnimationFrame(this.animate);
     if (!this.ctx) return;
 
-    this.currentRotation += this.simService.rotationRate();
+    this.currentRotation += this.simService.controls.rotationRate();
     if (this.currentScale < TARGET_SCALE) {
-      this.currentScale += this.simService.zoomRate();
+      this.currentScale += this.simService.controls.zoomRate();
     } else {
       this.currentScale = 1.0;
     }
@@ -241,7 +241,7 @@ class Star {
   }
 
   update() {
-    const speed = this.isStreaking ? this.simService.streakingStarSpeed() : this.simService.nonStreakingStarSpeed();
+    const speed = this.isStreaking ? this.simService.controls.streakingStarSpeed() : this.simService.controls.nonStreakingStarSpeed();
     this.z -= speed;
     if (this.z <= 0) this.reset();
     if (!this.isStreaking) {
@@ -256,7 +256,7 @@ class Star {
     const baseSizeParallax = 1 - this.z / this.initialZ;
     const opacity = baseSizeParallax;
     const scaleCompensation = 1 / currentScale;
-    const radius = baseSizeParallax * this.simService.baseStarSize() * scaleCompensation * this.flickerOffset * 0.5;
+    const radius = baseSizeParallax * this.simService.controls.baseStarSize() * scaleCompensation * this.flickerOffset * 0.5;
     const effectiveAlpha = Math.min(1.0, opacity * this.flickerOffset * 2.5);
 
     if (radius > 0.1) {

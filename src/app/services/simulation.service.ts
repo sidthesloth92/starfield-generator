@@ -1,25 +1,33 @@
-import { Injectable, signal } from '@angular/core';
-
-export type RecordingState = 'idle' | 'recording' | 'processing';
+import { Injectable, signal, Signal, WritableSignal } from '@angular/core';
+import { RecordingState, ControlKey } from '../models/simulation.model';
+import { CONTROLS } from '../constants/simulation.constant';
 
 @Injectable({
   providedIn: 'root',
 })
 export class SimulationService {
-  // Simulation parameters as Signals
-  zoomRate = signal(0.0004);
-  rotationRate = signal(0.0001);
-  streakingStarSpeed = signal(1);
-  nonStreakingStarSpeed = signal(1);
-  baseStarSize = signal(10);
+  // Config-driven Signals grouped in an object for type-safe access
+  public readonly controls: Record<ControlKey, WritableSignal<number>> = {
+    zoomRate: signal(CONTROLS['zoomRate'].initial),
+    rotationRate: signal(CONTROLS['rotationRate'].initial),
+    streakingStarSpeed: signal(CONTROLS['streakingStarSpeed'].initial),
+    nonStreakingStarSpeed: signal(CONTROLS['nonStreakingStarSpeed'].initial),
+    baseStarSize: signal(CONTROLS['baseStarSize'].initial),
+  };
 
   // UI / Global states
   recordingState = signal<RecordingState>('idle');
   loadingProgress = signal<string>('Initializing...');
 
-  updateZoomRate(val: number) { this.zoomRate.set(val); }
-  updateRotationRate(val: number) { this.rotationRate.set(val); }
-  updateStreakingStarSpeed(val: number) { this.streakingStarSpeed.set(val); }
-  updateNonStreakingStarSpeed(val: number) { this.nonStreakingStarSpeed.set(val); }
-  updateBaseStarSize(val: number) { this.baseStarSize.set(val); }
+  getControl(control: ControlKey): number {
+    return this.controls[control]();
+  }
+
+  getParameterSignal(control: ControlKey): Signal<number> {
+    return this.controls[control];
+  }
+
+  updateParameter(control: ControlKey, value: number) {
+    this.controls[control].set(value);
+  }
 }
