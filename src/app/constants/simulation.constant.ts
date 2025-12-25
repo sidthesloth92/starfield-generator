@@ -17,8 +17,8 @@ export const CONTROLS: Record<ControlKey, ControlMetadata> = {
     initial: 0.0001,
     precision: 4,
   },
-  streakingStarSpeed: {
-    label: 'Streaking Star Speed (Z)',
+  shootingStarSpeed: {
+    label: 'Shooting Star Speed',
     min: 1,
     max: 10,
     step: 1,

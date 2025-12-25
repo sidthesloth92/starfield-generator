@@ -10,7 +10,7 @@ export class SimulationService {
   public readonly controls: Record<ControlKey, WritableSignal<number>> = {
     zoomRate: signal(CONTROLS['zoomRate'].initial),
     rotationRate: signal(CONTROLS['rotationRate'].initial),
-    streakingStarSpeed: signal(CONTROLS['streakingStarSpeed'].initial),
+    shootingStarSpeed: signal(CONTROLS['shootingStarSpeed'].initial),
     nonStreakingStarSpeed: signal(CONTROLS['nonStreakingStarSpeed'].initial),
     baseStarSize: signal(CONTROLS['baseStarSize'].initial),
   };

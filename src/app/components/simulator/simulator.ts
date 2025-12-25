@@ -4,11 +4,16 @@ import { SimulationService } from '../../services/simulation.service';
 
 const M33_GALAXY_URL = '/Chrismas_Tree_HOO_16_9_full.jpg';
 const TARGET_SCALE = 2.5;
-const NUM_STREAKING_STARS = 500;
-const NUM_NON_STREAKING_STARS = 1000;
-const TOTAL_STAR_COUNT = NUM_STREAKING_STARS + NUM_NON_STREAKING_STARS;
+const NUM_SHOOTING_STARS = 10; // Reduced for dramatic effect
+const NUM_AMBIENT_STARS = 1000;
 const FRAME_RATE = 60;
 const MAX_RECORDING_SECONDS = 30;
+
+// Shooting star config
+const SHOOTING_STAR_SPEED_MULTIPLIER = 12; // Faster than ambient but not too fast
+const SHOOTING_STAR_SPAWN_RATE = 1.5; // Stars per second
+const TRAIL_LENGTH = 8; // Number of trail segments
+const CENTER_SPAWN_RATIO = 0.3; // Spawn within ±30% of center
 
 @Component({
   selector: 'sfg-simulator',
@@ -28,8 +33,10 @@ export class Simulator implements AfterViewInit {
   private centerY = 0;
   private currentScale = 1.0;
   private currentRotation = 0;
-  private stars: Star[] = [];
+  private ambientStars: AmbientStar[] = [];
+  private shootingStars: ShootingStar[] = [];
   private starTexture: HTMLCanvasElement | null = null;
+  private lastShootingStarSpawn = 0;
 
   // Recording variables
   private mediaRecorder: MediaRecorder | null = null;
@@ -86,19 +93,22 @@ export class Simulator implements AfterViewInit {
     const BATCH_SIZE = 50;
 
     const generateBatch = () => {
-      const targetCount = Math.min(TOTAL_STAR_COUNT, starsGenerated + BATCH_SIZE);
+      const targetCount = Math.min(NUM_AMBIENT_STARS, starsGenerated + BATCH_SIZE);
       while (starsGenerated < targetCount) {
-        const isStreaking = starsGenerated < NUM_STREAKING_STARS;
-        this.stars.push(new Star(isStreaking, this.width, this.height, this.simService));
+        this.ambientStars.push(new AmbientStar(this.width, this.height, this.simService));
         starsGenerated++;
       }
 
-      const percentage = Math.floor((starsGenerated / TOTAL_STAR_COUNT) * 100);
+      const percentage = Math.floor((starsGenerated / NUM_AMBIENT_STARS) * 100);
       this.simService.loadingProgress.set(`Generating Stars: ${percentage}%`);
 
-      if (starsGenerated < TOTAL_STAR_COUNT) {
+      if (starsGenerated < NUM_AMBIENT_STARS) {
         requestAnimationFrame(generateBatch);
       } else {
+        // Initialize a few shooting stars
+        for (let i = 0; i < NUM_SHOOTING_STARS; i++) {
+          this.shootingStars.push(new ShootingStar(this.width, this.height, this.simService));
+        }
         callback();
       }
     };
@@ -120,6 +130,7 @@ export class Simulator implements AfterViewInit {
   private finalizeSetup() {
     this.generateStarTexture();
     this.simService.loadingProgress.set('Ready');
+    this.lastShootingStarSpawn = Date.now();
     this.animate();
   }
 
@@ -155,6 +166,20 @@ export class Simulator implements AfterViewInit {
       this.currentScale = 1.0;
     }
 
+    // Spawn new shooting stars periodically
+    const now = Date.now();
+    const timeSinceLastSpawn = (now - this.lastShootingStarSpawn) / 1000;
+    if (timeSinceLastSpawn > (1 / SHOOTING_STAR_SPAWN_RATE)) {
+      // Find a dead shooting star and respawn it
+      for (const star of this.shootingStars) {
+        if (!star.isActive) {
+          star.spawn();
+          this.lastShootingStarSpawn = now;
+          break;
+        }
+      }
+    }
+
     this.ctx.clearRect(0, 0, this.width, this.height);
     this.ctx.save();
     this.ctx.translate(this.centerX, this.centerY);
@@ -168,10 +193,18 @@ export class Simulator implements AfterViewInit {
       this.ctx.drawImage(this.galaxyImage, -drawWidth / 2, -drawHeight / 2, drawWidth, drawHeight);
     }
 
-    for (const star of this.stars) {
+    // Draw ambient stars first (background layer)
+    for (const star of this.ambientStars) {
       star.update();
       star.draw(this.ctx, this.width, this.currentScale, this.starTexture);
     }
+
+    // Draw shooting stars on top with trails
+    for (const star of this.shootingStars) {
+      star.update();
+      star.draw(this.ctx, this.width, this.currentScale, this.starTexture);
+    }
+
     this.ctx.restore();
   };
 
@@ -214,7 +247,8 @@ export class Simulator implements AfterViewInit {
   }
 }
 
-class Star {
+// Ambient background stars (slow, flickering)
+class AmbientStar {
   x = 0;
   y = 0;
   z = 0;
@@ -223,7 +257,6 @@ class Star {
   flickerRate = 0;
 
   constructor(
-    public isStreaking: boolean, 
     private width: number, 
     private height: number,
     private simService: SimulationService
@@ -241,12 +274,10 @@ class Star {
   }
 
   update() {
-    const speed = this.isStreaking ? this.simService.controls.streakingStarSpeed() : this.simService.controls.nonStreakingStarSpeed();
+    const speed = this.simService.controls.nonStreakingStarSpeed();
     this.z -= speed;
     if (this.z <= 0) this.reset();
-    if (!this.isStreaking) {
-      this.flickerOffset = 0.5 + 0.5 * Math.sin(Date.now() * this.flickerRate * 0.001);
-    }
+    this.flickerOffset = 0.5 + 0.5 * Math.sin(Date.now() * this.flickerRate * 0.001);
   }
 
   draw(ctx: CanvasRenderingContext2D, width: number, currentScale: number, sprite: HTMLCanvasElement | null) {
@@ -274,5 +305,115 @@ class Star {
       }
       ctx.restore();
     }
+  }
+}
+
+// Dramatic shooting stars with trails
+class ShootingStar {
+  x = 0;
+  y = 0;
+  z = 0;
+  initialZ = 0;
+  isActive = false;
+  trail: { x: number; y: number; z: number }[] = [];
+
+  constructor(
+    private width: number, 
+    private height: number,
+    private simService: SimulationService
+  ) {
+    // Start inactive - will spawn periodically
+    this.isActive = false;
+  }
+
+  spawn() {
+    // Spawn closer to center for more visibility
+    this.x = (Math.random() - 0.5) * this.width * CENTER_SPAWN_RATIO;
+    this.y = (Math.random() - 0.5) * this.height * CENTER_SPAWN_RATIO;
+    this.z = this.width * 0.8 + Math.random() * this.width * 0.2; // Start far away
+    this.initialZ = this.z;
+    this.trail = [];
+    this.isActive = true;
+  }
+
+  update() {
+    if (!this.isActive) return;
+
+    // Store current position in trail before moving
+    this.trail.unshift({ x: this.x, y: this.y, z: this.z });
+    if (this.trail.length > TRAIL_LENGTH) {
+      this.trail.pop();
+    }
+
+    // Move very fast
+    const baseSpeed = this.simService.controls.shootingStarSpeed();
+    const speed = baseSpeed * SHOOTING_STAR_SPEED_MULTIPLIER;
+    this.z -= speed;
+
+    // Deactivate when it passes the camera
+    if (this.z <= 10) {
+      this.isActive = false;
+      this.trail = [];
+    }
+  }
+
+  draw(ctx: CanvasRenderingContext2D, width: number, currentScale: number, sprite: HTMLCanvasElement | null) {
+    if (!this.isActive) return;
+
+    const scaleCompensation = 1 / currentScale;
+    const baseSize = this.simService.controls.baseStarSize();
+
+    ctx.save();
+    ctx.globalCompositeOperation = 'lighter';
+
+    // Draw trail (fading segments)
+    for (let i = 0; i < this.trail.length; i++) {
+      const t = this.trail[i];
+      if (t.z <= 0) continue;
+
+      const k = width / t.z;
+      const px = t.x * k;
+      const py = t.y * k;
+      const baseSizeParallax = 1 - t.z / this.initialZ;
+      const trailOpacity = (1 - i / this.trail.length) * 0.6; // Fade out along trail
+      const radius = baseSizeParallax * baseSize * scaleCompensation * 0.4;
+
+      if (radius > 0.1) {
+        ctx.globalAlpha = trailOpacity;
+        if (sprite) {
+          const size = radius * 6;
+          ctx.drawImage(sprite, px - size / 2, py - size / 2, size, size);
+        } else {
+          ctx.fillStyle = `rgba(255, 255, 255, ${trailOpacity})`;
+          ctx.beginPath();
+          ctx.arc(px, py, radius, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      }
+    }
+
+    // Draw head (brightest and largest)
+    if (this.z > 0) {
+      const k = width / this.z;
+      const px = this.x * k;
+      const py = this.y * k;
+      const baseSizeParallax = 1 - this.z / this.initialZ;
+      const radius = baseSizeParallax * baseSize * scaleCompensation * 0.8;
+
+      if (radius > 0.1) {
+        ctx.globalAlpha = 1.0;
+        if (sprite) {
+          const size = radius * 10;
+          ctx.drawImage(sprite, px - size / 2, py - size / 2, size, size);
+        } else {
+          ctx.fillStyle = 'rgba(255, 255, 255, 1)';
+          ctx.beginPath();
+          ctx.arc(px, py, radius, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      }
+    }
+
+    ctx.restore();
   }
 }

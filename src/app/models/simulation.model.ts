@@ -3,7 +3,7 @@ export type RecordingState = 'idle' | 'recording' | 'processing';
 export type ControlKey = 
   | 'zoomRate'
   | 'rotationRate'
-  | 'streakingStarSpeed'
+  | 'shootingStarSpeed'
   | 'nonStreakingStarSpeed'
   | 'baseStarSize';
 
